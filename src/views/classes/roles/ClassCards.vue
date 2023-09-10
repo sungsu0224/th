@@ -24,15 +24,15 @@ interface RoleDetails {
 }
 
 interface Roles {
-  role: string
+  className: string
   users: string[]
   details: RoleDetails
 }
 
 // 👉 Roles List
-const roles = ref<Roles[]>([
+const classes = ref<Roles[]>([
   {
-    role: '월/수 3시',
+    className: '월/수 3시',
     users: [avatar1, avatar2, avatar3, avatar4],
     details: {
       name: '월/수 3시',
@@ -59,7 +59,7 @@ const roles = ref<Roles[]>([
     },
   },
   {
-    role: '월/수 5시',
+    className: '월/수 5시',
     users: [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7],
     details: {
       name: '월/수 5시',
@@ -86,7 +86,7 @@ const roles = ref<Roles[]>([
     },
   },
   {
-    role: '월/수 7시',
+    className: '월/수 7시',
     users: [avatar1, avatar2, avatar3, avatar4, avatar5],
     details: {
       name: 'Users',
@@ -119,7 +119,7 @@ const roles = ref<Roles[]>([
     },
   },
   {
-    role: '화/목 3시',
+    className: '화/목 3시',
     users: [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6],
     details: {
       name: '화/목 3시',
@@ -146,7 +146,7 @@ const roles = ref<Roles[]>([
     },
   },
   {
-    role: '화/목 5시',
+    className: '화/목 5시',
     users: [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8, avatar9, avatar10],
     details: {
       name: '화/목 5시',
@@ -183,7 +183,6 @@ const roles = ref<Roles[]>([
 const isRoleDialogVisible = ref(false)
 
 const roleDetail = ref<RoleDetails>()
-
 const isAddRoleDialogVisible = ref(false)
 
 const editPermission = (value: RoleDetails) => {
@@ -196,8 +195,8 @@ const editPermission = (value: RoleDetails) => {
   <VRow>
     <!-- 👉 Roles -->
     <VCol
-      v-for="item in roles"
-      :key="item.role"
+      v-for="item in classes"
+      :key="item.className"
       cols="12"
       sm="6"
       lg="4"
@@ -241,7 +240,7 @@ const editPermission = (value: RoleDetails) => {
 
         <VCardText>
           <p class="text-h6 text-medium-emphasis mb-0">
-            {{ item.role }}
+            {{ item.className }}
           </p>
           <div class="d-flex align-center">
             <a
@@ -300,11 +299,11 @@ const editPermission = (value: RoleDetails) => {
           </VCol>
         </VRow>
       </VCard>
-      <AddEditRoleDialog v-model:is-dialog-visible="isAddRoleDialogVisible" />
+      <AddEditClassDialog v-model:is-dialog-visible="isAddRoleDialogVisible" />
     </VCol>
   </VRow>
 
-  <AddEditRoleDialog
+  <AddEditClassDialog
     v-model:is-dialog-visible="isRoleDialogVisible"
     v-model:role-permissions="roleDetail"
   />

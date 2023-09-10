@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
-import type { UserProperties } from '@/@fake-db/types'
+import type { StudentProperties } from '@/@fake-db/types'
 import { paginationMeta } from '@/@fake-db/utils'
-import AddNewUserDrawer from '@/views/classes/user/list/AddNewUserDrawer.vue'
 import { useUserListStore } from '@/views/classes/user/useUserListStore'
 import type { Options } from '@core/types'
-import { avatarText } from '@core/utils/formatters'
+import avatar1 from '@images/avatars/avatar-1.png'
+import avatar2 from '@images/avatars/avatar-2.png'
 
 // 👉 Store
 const userListStore = useUserListStore()
 const searchQuery = ref('')
-const selectedRole = ref()
+const selectedClass = ref()
+const isUserInfoEditDialogVisible = ref(false)
 const selectedPlan = ref()
 const selectedStatus = ref()
-const totalPage = ref(1)
+
+// const totalPage = ref(1)
 const totalUsers = ref(0)
-const users = ref<UserProperties[]>([])
+
+// const users = ref<UserProperties[]>([])
+const students = ref<StudentProperties[]>([])
 
 const options = ref<Options>({
   page: 1,
@@ -26,40 +30,45 @@ const options = ref<Options>({
 })
 
 const headers = [
-  { title: '이름', key: 'user' },
-
-  // { title: 'email', key: 'email' },
+  { title: '이름', key: 'name' },
+  { title: 'email', key: 'email' },
   { title: '전화번호', key: 'contact' },
+  { title: '부모님 전화번호', key: 'parent_contact' },
   { title: '역할', key: 'role' },
-  { title: '참여 수업', key: 'classCode' },
+  { title: '참여 수업', key: 'classcode' },
   { title: '상태', key: 'status' },
   { title: 'ACTION', key: 'actions', sortable: false },
 ]
 
-// 👉 Fetching users
-
-const fetchUsers = () => {
-  userListStore.fetchUsers({
+// 👉 test
+const fetchStudents = () => {
+  userListStore.fetchStudents({
     q: searchQuery.value,
     status: selectedStatus.value,
     plan: selectedPlan.value,
-    role: selectedRole.value,
+    classCode: selectedClass.value,
     options: options.value,
   }).then(response => {
-    users.value = response.data.users
-    totalPage.value = response.data.totalPage
-    totalUsers.value = response.data.totalUsers
+    students.value = response.data.students
+    console.log(students)
   }).catch(error => {
     console.error(error)
   })
 }
 
-watchEffect(fetchUsers)
+const addNewStudent = (studentData: StudentProperties) => {
+  console.log(studentData)
+  userListStore.addStudent(studentData)
+
+  fetchStudents()
+}
+
+watchEffect(fetchStudents)
 
 // 👉 search filters
 const roles = [
-  { title: '월/수 3시', value: 'admin' },
-  { title: '월/수 5시', value: 'author' },
+  { title: '1', value: '1' },
+  { title: '2', value: '2' },
   { title: '월/수 7시', value: 'editor' },
   { title: '화/목 3시', value: 'maintainer' },
   { title: '화/목 5시', value: 'subscriber' },
@@ -94,15 +103,7 @@ const resolveUserStatusVariant = (stat: string) => {
   return 'primary'
 }
 
-const isAddNewUserDrawerVisible = ref(false)
-
-// 👉 Add new user
-const addNewUser = (userData: UserProperties) => {
-  userListStore.addUser(userData)
-
-  // refetch User
-  fetchUsers()
-}
+// const isAddNewUserDrawerVisible = ref(false)
 </script>
 
 <template>
@@ -114,8 +115,16 @@ const addNewUser = (userData: UserProperties) => {
           variant="outlined"
           color="disabled"
           prepend-icon="mdi-tray-arrow-up"
+          @click="fetchStudents"
         >
-          Export
+          동기화
+        </VBtn>
+        <VBtn @click="isUserInfoEditDialogVisible = !isUserInfoEditDialogVisible">
+          학생 등록
+          <VIcon
+            end
+            icon="mdi-checkbox-marked-circle-outline"
+          />
         </VBtn>
 
         <VSpacer />
@@ -124,15 +133,15 @@ const addNewUser = (userData: UserProperties) => {
           <!-- 👉 Search  -->
           <VTextField
             v-model="searchQuery"
-            placeholder="Search User"
+            placeholder="Search Student"
             density="compact"
             style="width: 8rem;"
           />
 
           <!-- 👉 Add user button -->
           <VSelect
-            v-model="selectedRole"
-            label="Select Role"
+            v-model="selectedClass"
+            label="참여 수업 선택"
             :items="roles"
             density="compact"
             clearable
@@ -146,7 +155,7 @@ const addNewUser = (userData: UserProperties) => {
       <VDataTableServer
         v-model:items-per-page="options.itemsPerPage"
         v-model:page="options.page"
-        :items="users"
+        :items="students"
         :items-length="totalUsers"
         :headers="headers"
         show-select
@@ -154,7 +163,7 @@ const addNewUser = (userData: UserProperties) => {
         @update:options="options = $event"
       >
         <!-- User -->
-        <template #item.user="{ item }">
+        <template #item.name="{ item }">
           <div class="d-flex">
             <VAvatar
               size="34"
@@ -162,24 +171,20 @@ const addNewUser = (userData: UserProperties) => {
               :color="!item.raw.avatar ? resolveUserRoleVariant(item.raw.role).color : undefined"
               class="me-3"
             >
-              <VImg
-                v-if="item.raw.avatar"
-                :src="item.raw.avatar"
-              />
-              <span v-else>{{ avatarText(item.raw.fullName) }}</span>
+              <VImg :src="~item.raw.avatar ? avatar1 : avatar2" />
             </VAvatar>
 
             <div class="d-flex flex-column">
               <h6 class="text-sm font-weight-medium">
                 <RouterLink
-                  :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }"
+                  :to="{ name: 'classes-user-view-id', params: { id: item.raw.id } }"
                   class="font-weight-medium user-list-name"
                 >
-                  {{ item.raw.fullName }}
+                  {{ item.raw.name }}
                 </RouterLink>
               </h6>
 
-              <span class="text-xs text-medium-emphasis">@{{ item.raw.username }}</span>
+              <span class="text-xs text-medium-emphasis">{{ item.raw.last_login }}</span>
             </div>
           </div>
         </template>
@@ -224,7 +229,7 @@ const addNewUser = (userData: UserProperties) => {
             variant="text"
             size="small"
             color="medium-emphasis"
-            :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }"
+            :to="{ name: 'classes-user-view-id', params: { id: item.raw.id } }"
           >
             <VIcon
               size="24"
@@ -279,9 +284,15 @@ const addNewUser = (userData: UserProperties) => {
     </VCard>
 
     <!-- 👉 Add New User -->
-    <AddNewUserDrawer
+    <!--
+      <AddNewUserDrawer
       v-model:isDrawerOpen="isAddNewUserDrawerVisible"
       @user-data="addNewUser"
+      />
+    -->
+    <StudentInfoEditDialog
+      v-model:isDialogVisible="isUserInfoEditDialogVisible"
+      @submit="addNewStudent"
     />
   </section>
 </template>

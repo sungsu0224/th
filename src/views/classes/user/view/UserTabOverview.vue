@@ -14,32 +14,32 @@ import xamarin from '@images/icons/project-icons/xamarin.png'
 
 // Project Table Header
 const projectTableHeaders = [
-  { title: 'PROJECT', key: 'project' },
-  { title: 'TOTAL TASK', key: 'totalTask' },
+  { title: '숙제', key: 'project' },
+  { title: '결과', key: 'totalTask' },
   { title: 'PROGRESS', key: 'progress' },
-  { title: 'HOURS', key: 'hours' },
+  { title: '진행여부', key: 'hours' },
 ]
 
 const projects = [
   {
     logo: react,
-    name: 'BGC eCommerce App',
-    project: 'React Project',
+    name: '단어시험 day30',
+    project: '8월 3일',
     totalTask: '122/240',
     progress: 78,
     hours: '18:42',
   },
   {
     logo: figma,
-    name: 'Falcon Logo Design',
-    project: 'Figma Project',
+    name: '단어시험 day 31',
+    project: '8월 5일',
     totalTask: '09/56',
     progress: 18,
     hours: '20:42',
   },
   {
     logo: vue,
-    name: 'Dashboard Design',
+    name: '단어시험 day 31',
     project: 'Vuejs Project',
     totalTask: '290/320',
     progress: 62,
@@ -47,7 +47,7 @@ const projects = [
   },
   {
     logo: xamarin,
-    name: 'Foodista mobile app',
+    name: '단어시험 day 33',
     project: 'Xamarin Project',
     totalTask: '290/320',
     progress: 8,
@@ -55,7 +55,7 @@ const projects = [
   },
   {
     logo: python,
-    name: 'Dojo Email App',
+    name: '단어시험 day 34',
     project: 'Python Project',
     totalTask: '120/186',
     progress: 49,
@@ -63,7 +63,7 @@ const projects = [
   },
   {
     logo: sketch,
-    name: 'Blockchain Website',
+    name: '단어시험 day 35',
     project: 'Sketch Project',
     totalTask: '99/109',
     progress: 92,
@@ -71,7 +71,7 @@ const projects = [
   },
   {
     logo: html5,
-    name: 'Hoffman Website',
+    name: '단어시험 day 36',
     project: 'HTML Project',
     totalTask: '98/110',
     progress: 88,
@@ -96,7 +96,7 @@ const resolveUserProgressVariant = (progress: number) => {
 <template>
   <VRow>
     <VCol cols="12">
-      <VCard title="Project List">
+      <VCard title="단어시험 -토익 300일 완성">
         <!-- 👉 User Project List Table -->
         <!-- SECTION Datatable -->
         <VDataTable

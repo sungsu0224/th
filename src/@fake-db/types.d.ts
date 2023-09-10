@@ -203,8 +203,24 @@ export interface UserProperties {
   parentPhoneNum : string
   classCode : string
 }
-// !SECTION
 
+
+// !SECTION
+export interface StudentProperties {
+  id: number
+  avatar: string
+  classcode : string
+  name: string
+  role: string
+  contact: string
+  parent_name : string
+  parent_contact: string
+  email: string
+  gender: string
+  status: string
+  comment: string
+  last_login: string
+}
 // SECTION App: Calendar
 export interface CalendarEvent {
   id: string

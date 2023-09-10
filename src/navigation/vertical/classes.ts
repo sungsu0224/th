@@ -1,7 +1,7 @@
 export default [
-  { heading: '운영자' },
+  { heading: 'Admin' },
   {
-    title: '수업 관리',
+    title: '수업',
     icon: { icon: 'mdi-shield-account-outline' },
     to: 'classes-roles',
   },

@@ -7,10 +7,10 @@ import UserList from '@/views/classes/roles/UserList.vue'
   <VRow>
     <VCol cols="12">
       <h5 class="text-h5 mb-1">
-        Class List
+        두유의 Class List
       </h5>
       <p class="text-sm mb-0">
-        선생님은 이 페이지에서 수업을 관리할 수 있습니다.
+        선생님은 여기에서 자유롭게 수정이 가능합니다!
       </p>
     </VCol>
 
